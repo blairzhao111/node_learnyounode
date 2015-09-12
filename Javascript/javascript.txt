@@ -1,0 +1,64 @@
+OBJECTS:
+Javascript is the prototypal language, which means its inheritance is prototype inheritance.
+Unlike other classical language, javascript is class-free.
+Prototypal inheritance means an object can inherit directly from other objects without using class hierachy.
+All objects in javascript inherit directly ot indirectly from Object.prototype.
+
+Three main ways to create a object:
+1.object literal, which is inherited from Object.prototype
+
+2.new prefix operator + Construction invocation, which is inherited from Constructor.prototype
+This is a classical-like inheritance,like Douglas Crockford described "Pseudoclassical" inheritance.
+for example:
+new Object() inherits from Object.prototype
+new Date() directly inherits from Date.prototype and follow the prototype chain all along to the Object.prototype
+
+Creation steps of new Constructor():
+1.create a new empty object
+2.set the new created empty object's hidden inheritance link to Constructor.prototype
+3.pass new created empty object as "this" into Constructor function and return the customized object 
+
+3.Object.create(prototypeObject), which is inherited from passin object
+This is the true nature of javascript prototypal inheritance mechanism, Adding from ECMAscript5 standard.
+
+Creation steps:
+1.create a new empty object
+2.set the new created empty object's hidden inheritance link to prototypeObject
+3.return new created object
+
+Recommand:
+If there are no inheritance needs, use object literal to create objects. If there is a request of inheritance,
+use Object.create() to create inherited objects. Only use new Construction() form to create built-in type of objects.
+
+FUNCTIONS:
+Javascript is a functional object oriented language. Functions is the core part of the language.
+Javascript function can be used as pure functions, methods, Constructors, modules.
+Functions are objects.Function objects are linked to Function.prototype.
+Every function object has an prototype property, which is the prototype object.
+
+Typical we use function literal to create function object:
+A function literal has four parts:
+1.function keyword 
+2.optional name(A function without name is called anonymous function)
+3.parameters list(parameter can be zero to any number)
+4.function body
+Like: function name (parameters) {body}
+
+Four invocation patterns on javascript function:
+1.The Method Invocation Pattern, "this" is bound to object which calls the method.
+2.The Function Invocation Pattern, "this" is bound to global object.
+3.The Constructor Invocation Pattern, "this" is bound to new created object
+4.The Apply Invocation Pattern,
+
+Closure:
+An inner function enjoys access to the parameters and variables of the outer function(the function it is nested within) even outer function is finished.
+
+
+
+
+
+
+
+
+
+
