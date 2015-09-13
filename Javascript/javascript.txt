@@ -1,10 +1,38 @@
+Javascript Summary:
+This summary is purely about the language's important core concepts. There is no step into client-side js, DOM manipulation, Node(Server-side js) and their frameworks.
+Most of material is coming from Douglas Crockford's book "Javascript: The Good Parts".
+
+Javscript is a loosely-typed, dynamic, prototypal inherited, functional object-oriented programming languag
+The language itself original is a single thread scripting language. Node's appearance has added non-blocking I/O features to the language.
+It has been used as the language of the browser for years. Recently, Node platform gives Javascript new power on Server-side programming.
+Although Javascript has some major design flaws, it still is a very expressive and powerful lightweight language can be used effective by people who truly understand its true nature.
+
+GENERIC:
+Types:
+The simple types of Javascript are numbers, strings, booleans, null and undefined. All other values are objects.
+Numbers, strings, booleans are object-like in that they have methods, but they are immutable.
+Objects in Javascript are mutable names/values collections.
+
+Scope:
+Global scope: variables in this scope belong to global object.
+Function scope: use var keyword to define a function level variable. Variables in function scope is only valid inside the function. 
+Function scope can be used to achieve a module-level abstraction.
+Block scope: use let keyword to define a block level variable. Part of ECMAScript 2015(ES6) standard.
+
+Number:
+This is no a seperate reprsentation of integer and floating-point in the language.
+In Javascript, all number is represented by 64-bit floating-point, which is similar to "double" type in java.
+Because of that, some arithmetic operations may have some very slight deviations to expected results. 
+
 OBJECTS:
 Javascript is the prototypal language, which means its inheritance is prototype inheritance.
 Unlike other classical language, javascript is class-free.
 Prototypal inheritance means an object can inherit directly from other objects without using class hierachy.
 All objects in javascript inherit directly ot indirectly from Object.prototype.
+The prototype link is a one-way link. It is used only in retrieval, has no effect on updating.
+Use for in loop and hasOwnProperty to filter through the objects(collections).
 
-Three main ways to create a object:
+Three main ways to create an object:
 1.object literal, which is inherited from Object.prototype
 
 2.new prefix operator + Construction invocation, which is inherited from Constructor.prototype
@@ -30,6 +58,8 @@ Recommand:
 If there are no inheritance needs, use object literal to create objects. If there is a request of inheritance,
 use Object.create() to create inherited objects. Only use new Construction() form to create built-in type of objects.
 
+
+
 FUNCTIONS:
 Javascript is a functional object oriented language. Functions is the core part of the language.
 Javascript function can be used as pure functions, methods, Constructors, modules.
@@ -46,14 +76,62 @@ Like: function name (parameters) {body}
 
 Four invocation patterns on javascript function:
 1.The Method Invocation Pattern, "this" is bound to object which calls the method.
-2.The Function Invocation Pattern, "this" is bound to global object.
-3.The Constructor Invocation Pattern, "this" is bound to new created object
-4.The Apply Invocation Pattern,
+2.The Function Invocation Pattern, "this" is bound to global object. 
+  Problem is when the time to invoke, like a helper function inside a method, "this" is bound to the global variable instead of outer function's "this" object
+  Solution is to let the method defind a variable call "that" and assign it the value of method's "this", in this way, inner function has the access to "this".
+3.The Constructor Invocation Pattern, "this" is bound to new created object.
+  In javascript there is no way to tell whether a function is a pure function or a constructor, best way to remind some functions are constructors are
+  use a capitalized first-letter convention to name you function if it acts as a constructors.
+4.The Apply Invocation Pattern, the apply method lets us construct an array of arguments to use to invoke a function, it also lets us choose the value of "this".
+  Syntax: function.apply(objectboundtothis,argumentsArray). 
+
+Arguments:
+A bonus hidden parameter passing into functions besides "this" is "arguments". It's an array-like object contains all parameters is written into ().
+"arguments" is not a really array, it has a length property but lacks all of array methods.
+If the passin parameter lists is too long. Use an object specifier which is an object literal containing all parameters to specify the parameters to the function.  
+
+Function Retrun:
+A function always returns a value. If the return value is not specified, the undefined is returned.
+The return statement can be used to cause function to return early.
+A function can return any legal Javascript values, include of another function or an object(object literal)
+
+Augmenting Types:
+Javascript allows the basic types of the language to be augmented. You can augment on Object.property object, which the augment will be applied on every 
+object. Also augment Function.prototype will have effect on every function object.
 
 Closure:
 An inner function enjoys access to the parameters and variables of the outer function(the function it is nested within) even outer function is finished.
 
 
+
+ARRAY:
+Javascript's array implementation is different from almost all other languages' array implementations.
+Instead array is a linear allocation of memory in which elements are accessed by integers that are used to compute offsets,
+Javascript provides an object that has some conventional array-like characteristics. In its nature, Javascript array is an object can be used as "associated array"
+It converts array subscripts into strings that are used to make properties. So, array is very similar to an object literal with the same properties, 
+except the array has many array-exclusive methods and a length properties.
+
+Javascript allows an array to contain any mixture of values instead of the same type.
+
+The array length property is also special, it is the largest integer property name in the array plus one.
+
+Because array is an object, it can be used delete keyword to delete any element from the array, but problem is it will leave a hole of undifined at that removed position.
+Typically, use array.splice() method to remove elements from array.
+
+If your array iteration needs order, don't use for in loop to iterate through an array. There is no guarantee about the order of the property.
+Use conventional for statement to avoid the problem.
+
+Javascript language itself doesn't have a good mechanism to distinguish an array and an object.
+Apply typeof operator on an array will return you a type of Object, which isn't very helpful in most of time. Use special way to tell the difference.
+
+REGULAR EXPRESSIONS:
+
+
+EXCEPTIONS:
+Exceptions in javascript is a object literal, use throw clause to generate an exception.
+An exception object is a object literal contains two properties:
+1.name :identifies the type of the exception.
+2.message: a discriptive message to briefly describe the exception. 
 
 
 
