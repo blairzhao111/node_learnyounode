@@ -1,10 +1,12 @@
 Javascript Summary:
-This summary is purely about the language's important core concepts. There is no step into client-side js, DOM manipulation, Node(Server-side js) and their frameworks.
+This summary is purely about the language's important core concepts. There is no step into client-side js, DOM manipulation, Node and their frameworks.
 Most of material is coming from Douglas Crockford's book "Javascript: The Good Parts".
 
-Javscript is a loosely-typed, dynamic, prototypal inherited, functional object-oriented programming languag
-The language itself original is a single thread scripting language. Node's appearance has added non-blocking I/O features to the language.
-It has been used as the language of the browser for years. Recently, Node platform gives Javascript new power on Server-side programming.
+Javscript is a loosely-typed, dynamic, prototypal inherited, functional object-oriented programming language.
+The language itself original is a single thread scripting language. Node's appearance has added non-blocking I/O features and native server nature to the language(precisely
+should be platform, in its true nature, node is still a C/C++ server).
+Which is AWESOME, AWESOME, AWESOME!!!!! Finally, there is a platform using correct I/O approachs and yeah, SINGLE THREAD, right?!!!
+Javscript has been used as the language of the browser for years. Recently, Node platform gives Javascript new power on Server-side programming.
 Although Javascript has some major design flaws, it still is a very expressive and powerful lightweight language can be used effective by people who truly understand its true nature.
 
 GENERIC:
@@ -23,6 +25,14 @@ Number:
 This is no a seperate reprsentation of integer and floating-point in the language.
 In Javascript, all number is represented by 64-bit floating-point, which is similar to "double" type in java.
 Because of that, some arithmetic operations may have some very slight deviations to expected results. 
+Fortunately, integer arithmetic in floating point is exact. So, there is a way to avoid decimal reprsentation error by scaling decimal to integer,
+operating arithmetic actions, then scaling back result to decimal.
+
+Falsy Values:
+0, NaN, ''(empty string), false, null, undefined.
+
+Javascript has an imporant feature called hoisting. Hoisting will move all declarations to the top of the scope in which they are defined. This allows 
+use a varible or function before declaring it. BUT, DON'T DO IT. Don't act like you are an awful programmer who actual has no clue of how to write proper code. 
 
 OBJECTS:
 Javascript is the prototypal language, which means its inheritance is prototype inheritance.
@@ -59,7 +69,6 @@ If there are no inheritance needs, use object literal to create objects. If ther
 use Object.create() to create inherited objects. Only use new Construction() form to create built-in type of objects.
 
 
-
 FUNCTIONS:
 Javascript is a functional object oriented language. Functions is the core part of the language.
 Javascript function can be used as pure functions, methods, Constructors, modules.
@@ -73,6 +82,9 @@ A function literal has four parts:
 3.parameters list(parameter can be zero to any number)
 4.function body
 Like: function name (parameters) {body}
+
+A function statement is shorthand for a var statement with a function value. It's important in js to understand that functions are values.
+A function literal is a function value.
 
 Four invocation patterns on javascript function:
 1.The Method Invocation Pattern, "this" is bound to object which calls the method.
@@ -133,8 +145,98 @@ An exception object is a object literal contains two properties:
 1.name :identifies the type of the exception.
 2.message: a discriptive message to briefly describe the exception. 
 
+ATTENTIONS:
+Some Design Errors in the language is hard to avoid and needs programmers to be awared of,
+Awful parts which are hard to aviod:
+1.Global variables and global objects acts as linker:
+Javascript does not have a linker to link different source code files. All compilation units are loaded into a common global object.
+A global variable is a variable that is visible in every scope.
+3 ways to declear a global varable:
+1.place a var statement outside of any function.
+2.add a property directly to the global object.
+3.use a varibale without declaring it.
+
+2.There is no block scope before ECMAScript 6(2015). Declare all variables at the top of each function.
+
+3.Semicolon Insertion:
+return 
+{status:fine};
+The code above will not return an object containing a status member, it actually will return undefined because Javascript automatic inserts ; when return line ends.
+There is no warning that ; insertion caused misinterpretation of the program. This kind of bug is extremely hard to be found.
+Put { at the end of previous line but not at the beginning of the next line.
+like: return {
+      status:fine };
+
+4.Reserved Words:
+There are a bunch of unnecessary and unused reserved words.
+When reserved words are used as keys in object literals, they must be quoted. Also, it can only used subscript notation instead of dot notation.
+
+5.Unicode:
+Javascript's characters are 16 bits.
+Javascript was designed when unicode was using utf-2 standard, which means js thinks the pair of characters is two distinct characters instead of 
+the pair to be a single character in Unicode.
+
+6.typeof
+typeof null returns "object", which is wrong, which means typeof cannot distinguish between null and object.
+A effective way to distinguish by null is falsy and all objects are truthy.
+if(myValue&&typeof myValue === "object"){....}
+typeof also cannot tell identities between array and object. typeof array return object, which is not really helpful.
+typeof regexp sometimes returns you "object", sometimes "function", instead of "regexp" which standard does not allow it.
+typeof cannot distinguish "NaN" and "number".
+
+7.parseInt
+recommend always to provide the radix parameter.
+when use + as add operator, make sure both operands are numbers.
+
+8.know how to deal with NaN.
+
+9.Understand Javascript arrays are not really true real arrays.
+
+10.Falsy Values 
+Although they are all falsy, they are not interchangeable.
+undefined is the value of missing members.
+
+11.Keep in mind that Javascript's objects are never truly empty because they can pick up members from the prototype chain.
+Even object literals are inherited from Object.prototype. 
+
+Bad parts which are easily to avoid:
+1.== and != equality operators:
+== and != are converted two different types into one if two operands are not same type. The rules by which they do that are complicated and unmemoerable.
+Sometimes, this kind of conertion is unreliable. For instance, 0 == "" returns true, false == "0" returns true.
+Recommand always using === and !== for equality tests.
+
+2.Don't use with keyword and eval function.
+
+3.Pay attention to switch case fall through, break after each case statements finished.
+
+4.Bitwise operators are inefficient in Javascript since language itself doesn't have an integer type. In a language which has an integer type, like java,
+  the bitwise operators work with integers to achieve effecient multiplication and division operations. In Javascript, if you apply bitewise operators on number,
+  language itself will convert double percision floating-point number into 32-bit integer and do the bitwise operations, then convert the results back to 
+  double percision floating-point. The entire process would extremely slow down your program.  
+  (why bitwise operations generally are faster, because in some assembly languages, there is no multiplication instruction, for example: if you want to get 
+   reuslt of 65*x, you literally need instruct machine to do 64 times adding x. Or you simply can left shift x 6 bits and add x to shifting result once.
+   In a performance perspective, 2 lines of instructions is much faster than 64 times repeating the same instruction.)
+
+5.Don't use typed wrappers:
+  Simply don't use new Boolean or New Number or new String.
+  Also avoid new Object and new Array. Use {} and [] literal notations instead.
+
+6.Be careful with new Construction().
+  Constructor function with initial capital letter should be used only with construction invocation that takes new prefix.
+  Invoke a function intended to act as a constructor without new prefix will pass the global object into this rather than new created object,  
+  that means that your function will be clobbering global variables when it attempts to initialize the new memembers. Messing with global object is horrible dangerous.
 
 
+JSON:
+Javascript Object Notation is a lightweight data interchange format based on Javascript object literal notation.
+It is a language independent text format. It can be used to exchange data between programs written in all modern programming languages.
+
+JSON has six kinds of values: objects, arrays, string, numbers, booleans, and the special value null:
+1.A JSON object is an unordered container of name/value pairs. A name can be any string and a value can be any JSON value.
+2.The JSON array is an ordered sequence of values, a value can be any JSON value. Wrapped in [].
+3.A JSON string is wrapped in double quote. JSON has escape characters start by \.
+4.A JSON number are like Javascript numbers.
+5.A JSON booleans has two values, true and false.
 
 
 
